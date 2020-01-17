@@ -1,0 +1,8 @@
+{
+  "root": true,
+  "extends": "@react-native-community",
+  "rules": {
+    "indent": ["warn", 2],
+    "no-trailing-spaces": "warn"
+  }
+}
