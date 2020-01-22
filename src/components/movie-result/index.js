@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { genres } from '../../utils/genres';
 import Rating from '../rating';
 
-const MovieResult = ({ movie }) => {
+const MovieResult = ({ movie, onPress }) => {
   if (!movie) {
     return null;
   }
@@ -16,7 +15,7 @@ const MovieResult = ({ movie }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
@@ -35,7 +34,7 @@ const MovieResult = ({ movie }) => {
           <Text>Estréia: {movie.release_date}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

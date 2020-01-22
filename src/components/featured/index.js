@@ -1,16 +1,16 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import Rating from '../rating';
 
-const Featured = ({ movie }) => {
+const Featured = ({ movie, onPress }) => {
   if (!movie) {
     return null;
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.cover}>
         <Image
           style={styles.image}
@@ -20,10 +20,10 @@ const Featured = ({ movie }) => {
         />
       </View>
       <Text style={styles.title} numberOfLines={1}>
-        {movie.title}
+        {movie.title || movie.original_name}
       </Text>
       <Rating rating={movie.vote_average / 2} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

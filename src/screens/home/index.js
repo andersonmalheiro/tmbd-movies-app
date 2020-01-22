@@ -15,9 +15,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { trendingMovies, searchByName } from '../../api/search';
 import * as Animatable from 'react-native-animatable';
 
+import { createStackNavigator } from 'react-navigation-stack';
+import About from '../about';
 import Reactotron from 'reactotron-react-native';
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [trending, setTrending] = useState([]);
   const [loadingTrending, setLoadingTrending] = useState(false);
@@ -82,6 +84,10 @@ const Home = () => {
     setQuery(value);
   };
 
+  const showDetails = movieID => {
+    navigation.navigate('About', { movieID });
+  };
+
   return (
     <SafeAreaView style={styles.main}>
       {/* Header */}
@@ -135,7 +141,11 @@ const Home = () => {
             contentInsetAdjustmentBehavior="automatic"
             horizontal={true}>
             {movies.map((movie, index) => (
-              <Featured key={index} movie={movie} />
+              <Featured
+                key={index}
+                movie={movie}
+                onPress={() => showDetails(movie.imdb_id || movie.id)}
+              />
             ))}
           </ScrollView>
         </View>
@@ -153,7 +163,11 @@ const Home = () => {
         <View style={styles.scrollViewVertical}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
             {trending.map((movie, index) => (
-              <MovieResult key={index} movie={movie} />
+              <MovieResult
+                key={index}
+                movie={movie}
+                onPress={() => showDetails(movie.imdb_id || movie.id)}
+              />
             ))}
           </ScrollView>
         </View>
@@ -162,4 +176,19 @@ const Home = () => {
   );
 };
 
-export default Home;
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: Home,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  About: {
+    screen: About,
+    navigationOptions: {
+      title: 'Detalhes',
+    },
+  },
+});
+
+export default HomeStack;
