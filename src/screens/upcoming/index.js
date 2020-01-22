@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 import styles from './styles';
 import MovieResult from '../../components/movie-result';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { upcomingMovies } from '../../api/search';
 import * as Animatable from 'react-native-animatable';
-
+import { createStackNavigator } from 'react-navigation-stack';
+import About from '../about';
 import Reactotron from 'reactotron-react-native';
 
-const Upcoming = () => {
+const Upcoming = ({ navigation }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [empty, setEmpty] = useState(false);
@@ -38,6 +38,10 @@ const Upcoming = () => {
       });
   };
 
+  const showDetails = movieID => {
+    navigation.navigate('About', { movieID });
+  };
+
   return (
     <SafeAreaView style={styles.main}>
       {/* Header */}
@@ -59,7 +63,11 @@ const Upcoming = () => {
         <View style={styles.scrollViewVertical}>
           <ScrollView contentInsetAdjustmentBehavior="automatic">
             {movies.map((movie, index) => (
-              <MovieResult key={index} movie={movie} />
+              <MovieResult
+                key={index}
+                movie={movie}
+                onPress={() => showDetails(movie.id)}
+              />
             ))}
           </ScrollView>
         </View>
@@ -68,4 +76,19 @@ const Upcoming = () => {
   );
 };
 
-export default Upcoming;
+const UpcomingStack = createStackNavigator({
+  Upcoming: {
+    screen: Upcoming,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  About: {
+    screen: About,
+    navigationOptions: {
+      title: 'Detalhes',
+    },
+  },
+});
+
+export default UpcomingStack;
